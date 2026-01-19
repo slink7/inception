@@ -1,0 +1,49 @@
+services:
+
+  mariadb:
+    build: ./requirements/mariadb/
+    image: mariadb
+    container_name: mariadb
+    volumes:
+      - database:/var/lib/mysql/
+    networks:
+      - local_network
+
+  nginx:
+    build: ./requirements/nginx/
+    image: nginx
+    container_name: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - site:/usr/share/nginx/html/
+    networks:
+      - local_network
+
+  # wordpress:
+  #   build: ./requirement/wordpress/
+  #   image: wordpress
+  #   container_name: wordpress
+  #
+
+volumes:
+
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/scambier/data/database
+
+  site:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/scambier/data/site
+
+
+networks:
+
+  local_network:
+    driver: bridge
