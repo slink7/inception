@@ -1,7 +1,5 @@
 FROM alpine:3.19
 
-MAINTAINER scambier <scambier@student.42.fr>
-
 RUN apk update && apk add --no-cache \
     php82 \
     php82-fpm \
