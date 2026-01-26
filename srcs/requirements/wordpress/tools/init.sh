@@ -2,7 +2,6 @@
 set -e
 
 DB_PASSWORD=$(cat /run/secrets/database_password)
-DB_ROOT_PASSWORD=$(cat /run/secrets/database_root_password)
 
 echo "🚀 Lancement WordPress (PHP-FPM)"
 
