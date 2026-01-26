@@ -10,6 +10,7 @@ services:
       - .env
     networks:
       - local_network
+    restart: always
 
   nginx:
     build: ./requirements/nginx/
@@ -23,6 +24,7 @@ services:
       - local_network
     depends_on:
       - wordpress
+    restart: always
 
   wordpress:
     build: ./requirements/wordpress/
@@ -36,6 +38,7 @@ services:
       - mariadb
     networks:
       - local_network
+    restart: always
 
 
 volumes:
