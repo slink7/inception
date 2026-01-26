@@ -8,7 +8,7 @@ mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-  echo "🟡 Initialisation de MariaDB..."
+  echo "Initialisation of MariaDB database"
 
   mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
@@ -25,11 +25,11 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';
 FLUSH PRIVILEGES;
 EOF
 
-  echo "🟢 Base initialisée"
+  echo "Database initialized"
   kill "$pid"
   wait "$pid"
 fi
 
-echo "🚀 Lancement MariaDB"
+echo "Starting MariaDB"
 exec mysqld --user=mysql
 
