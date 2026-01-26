@@ -10,6 +10,9 @@ services:
       - .env
     networks:
       - local_network
+    secrets:
+      - database_password
+      - database_root_password
     restart: always
 
   nginx:
@@ -38,6 +41,9 @@ services:
       - mariadb
     networks:
       - local_network
+    secrets:
+      - database_password
+      - database_root_password
     restart: always
 
 
@@ -62,3 +68,9 @@ networks:
 
   local_network:
     driver: bridge
+
+secrets:
+  database_password:
+    file: ../secrets/database_password.txt
+  database_root_password:
+    file: ../secrets/database_root_password.txt
