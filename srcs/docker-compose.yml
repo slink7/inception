@@ -68,8 +68,11 @@ networks:
   local_network:
     driver: bridge
 
+
 secrets:
+
   database_password:
     file: ../secrets/database_password.txt
+
   database_root_password:
     file: ../secrets/database_root_password.txt
