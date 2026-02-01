@@ -1,5 +1,8 @@
 NAME=inception
 
+init:
+	sudo sh set_domain_name.sh
+
 all:
 	sudo docker compose -f srcs/docker-compose.yml up --build
 
