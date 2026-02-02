@@ -2,6 +2,8 @@
 set -e
 
 DB_PASSWORD=$(cat /run/secrets/database_password)
+WP_ADMIN_PASSWORD=$(cat /run/secrets/wordpress_admin_password)
+WP_USER_PASSWORD=$(cat /run/secrets/wordpress_user_password)
 
 echo "Starting wordpress..."
 
@@ -22,12 +24,32 @@ done
 
 if [ ! -f /var/www/html/wp-config.php ]; then
   echo "Creating wp-config.php"
-  cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
+  wp config create \
+	  --dbhost=$DB_HOST\
+	  --dbname=$DB_NAME\
+	  --dbuser=$DB_USER\
+	  --dbpass=$DB_PASSWORD\
+	  --allow-root
+fi
 
-  sed -i "s/database_name_here/$DB_NAME/" /var/www/html/wp-config.php
-  sed -i "s/username_here/$DB_USER/" /var/www/html/wp-config.php
-  sed -i "s/password_here/$DB_PASSWORD/" /var/www/html/wp-config.php
-  sed -i "s/localhost/$DB_HOST/" /var/www/html/wp-config.php
+if ! wp core is-installed --allow-root; then
+	echo "Installing using wp-cli"
+	wp core install\
+		--url="https://$DOMAIN_NAME"\
+		--title="Inception supersite"\
+		--admin_user="$WP_ADMIN_USER"\
+		--admin_password="$WP_ADMIN_PASSWORD"\
+		--admin_email="$WP_ADMIN_EMAIL"\
+		--skip-email\
+		--allow-root
+fi
+
+if ! wp user get "$WP_USER" --allow-root >/dev/null 2>&1; then
+	echo "Creating normal user"
+	wp user create "$WP_USER_USER" "$WP_USER_EMAIL"\
+		--user_pass="$WP_USER_PASSWORD"\
+		--role=author\
+		--allow-root
 fi
 
 exec php-fpm82 -F

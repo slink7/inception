@@ -19,12 +19,16 @@ RUN apk update && apk add --no-cache \
 RUN mkdir -p /var/www/html /run/php
 
 RUN wget https://wordpress.org/latest.tar.gz \
- && tar -xzf latest.tar.gz \
- && mkdir -p /usr/src/wordpress/ \ 
- && mv wordpress/* /usr/src/wordpress/ \
- && rm -rf wordpress latest.tar.gz
+	&& tar -xzf latest.tar.gz \
+	&& mkdir -p /usr/src/wordpress/ \ 
+	&& mv wordpress/* /usr/src/wordpress/ \
+	&& rm -rf wordpress latest.tar.gz
 
 COPY conf/www.conf /etc/php82/php-fpm.d/www.conf
+
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+	&& chmod +x wp-cli.phar \
+	&& mv wp-cli.phar /usr/local/bin/wp
 
 COPY tools/init.sh /init.sh
 RUN chmod +x /init.sh
