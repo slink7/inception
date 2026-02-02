@@ -3,7 +3,6 @@ set -e
 
 DB_PASSWORD=$(cat /run/secrets/database_password)
 DB_ROOT_PASSWORD=$(cat /run/secrets/database_root_password)
-DB_ADMIN_PASSWORD=$(cat /run/secrets/database_admin_password)
 
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
@@ -23,9 +22,6 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 
 	CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
 	GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';
-
-	CREATE USER IF NOT EXISTS '${DB_ADMIN}'@'%' IDENTIFIED BY '${DB_ADMIN_PASSWORD}';
-	GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_ADMIN}'@'%';
 
 	ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';
 
