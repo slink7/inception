@@ -1,4 +1,4 @@
-#/usr/bin/sh
+#!/bin/sh
 
 #Appends TARGET to SOURCE if not already present
 
