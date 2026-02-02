@@ -19,7 +19,7 @@ if [ ! -f wp-config.php ]; then
   cp -r /usr/src/wordpress/* .
 fi
 
-until mariadb -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASSWORD" --ssl=OFF -e "SELECT 1;" >/dev/null 2>&1; do
+until mariadb -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASSWORD" --ssl=OFF -e "SELECT 1;" >/dev/null 2>&1; do
   echo "Waiting for MariaDB"
   sleep 2
 done
@@ -27,10 +27,10 @@ done
 if [ ! -f wp-config.php ]; then
   echo "Creating wp-config.php"
   wp config create \
-	  --dbhost=$DB_HOST\
-	  --dbname=$DB_NAME\
-	  --dbuser=$DB_USER\
-	  --dbpass=$DB_PASSWORD\
+	  --dbhost="$DB_HOST:$DB_PORT"\
+	  --dbname="$DB_NAME"\
+	  --dbuser="$DB_USER"\
+	  --dbpass="$DB_PASSWORD"\
 	  --allow-root
 fi
 
