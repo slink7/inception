@@ -1,9 +1,7 @@
 NAME=inception
 
-init:
-	sudo sh set_domain_name.sh
-
 all:
+	sudo sh set_domain_name.sh
 	sudo docker compose -f srcs/docker-compose.yml up --build
 
 down:
@@ -14,5 +12,11 @@ clean:
 
 fclean: clean
 	sudo docker system prune -af
+
+rmsite:
+	sudo rm -rf /home/scambier/data/site/*
+
+rmdatabase:
+	sudo rm -rf /home/scambier/data/database/*
 
 re: fclean all

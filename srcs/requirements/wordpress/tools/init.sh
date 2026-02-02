@@ -12,9 +12,11 @@ if [ -z "$DB_HOST" ] || [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ] || [ -z "$DB_
   exit 1
 fi
 
-if [ ! -f /var/www/html/wp-config.php ]; then
+cd /var/www/html
+
+if [ ! -f wp-config.php ]; then
   echo "Initialisation of wordpress volume"
-  cp -r /usr/src/wordpress/* /var/www/html
+  cp -r /usr/src/wordpress/* .
 fi
 
 until mariadb -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASSWORD" --ssl=OFF -e "SELECT 1;" >/dev/null 2>&1; do
@@ -22,7 +24,7 @@ until mariadb -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASSWORD" --ssl=OFF -e "SELECT 
   sleep 2
 done
 
-if [ ! -f /var/www/html/wp-config.php ]; then
+if [ ! -f wp-config.php ]; then
   echo "Creating wp-config.php"
   wp config create \
 	  --dbhost=$DB_HOST\
